@@ -22,7 +22,7 @@ Docker + Internet.
 
 ## Build Stage - Local
 
-`./run_dev.sh build` Build to `/dist`.
+`./run_dev.sh build` Build to `/dist`...
 
 ## Build Stage - Github Action
 
