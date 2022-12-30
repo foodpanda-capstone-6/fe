@@ -2,7 +2,7 @@
 
 ## Authoritative References
 
-[Planning] https://noellimx.atlassian.net/wiki/spaces/FPCAPSTONE/overview
+[Planning](https://noellimx.atlassian.net/wiki/spaces/FPCAPSTONE/overview)
 
 ## Requirement
 
@@ -34,11 +34,15 @@ connection-ec2.yaml ssh into remote server and logs current commit hash
 
 ## Build Stage - Github Action
 
-A build stage from Github Actions is triggered by [build-in-place.yaml](./.github/workflows/build-in-place.yaml). 
+A build stage from Github Actions is triggered by [build-in-place.yaml](./.github/workflows/build-in-place.yaml).
 
 Driver script should be `./run_dev.sh build` (see [local build stage](#build-stage---local))
 `
 
+## Deployment Stage - Github Action
+
+Set github actions to trigger on branch `deploy`.
+
 ## Glossary
 
-"capstone-6" and "vms" is used interchangably.
+`capstone-6` and `vms` is used interchangably.
