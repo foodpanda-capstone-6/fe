@@ -1,24 +1,30 @@
 import React, { useState } from "react";
+
+interface UserRegisterInputs {
+  username: string;
+  password: string;
+  passwordConfirm: string;
+  email: string;
+}
+
 export default function Register() {
-  interface User {
-    username: string;
-    password: string;
-    passwordConfirm: string;
-    email: string;
-  }
-  const [newUser, setNewUser] = useState<User>({
+  const initalUser: UserRegisterInputs = {
     username: "",
     password: "",
     passwordConfirm: "",
     email: "",
-  });
-  const [errorMsg, setErrorMsg] = useState("");
-  const handleNewUser = (e: React.ChangeEvent<HTMLInputElement>) => {
+  };
+
+  const [newUser, setNewUser] = useState<UserRegisterInputs>(initalUser);
+  const [errorMsg, setErrorMsg] = useState<string>("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewUser({
       ...newUser,
       [e.target.name]: e.target.value,
     });
   };
+
   const handleSubmit = () => {
     if (newUser.password !== newUser.passwordConfirm) {
       setErrorMsg(`password does not match`);
@@ -39,28 +45,28 @@ export default function Register() {
         placeholder="Username"
         name="username"
         value={newUser.username}
-        onChange={handleNewUser}
+        onChange={handleChange}
       />
       <input
         placeholder="Email"
         name="email"
         type="email"
         value={newUser.email}
-        onChange={handleNewUser}
+        onChange={handleChange}
       />
       <input
         placeholder="Password"
         name="password"
         type="password"
         value={newUser.password}
-        onChange={handleNewUser}
+        onChange={handleChange}
       />
       <input
         placeholder="Confirm"
         name="passwordConfirm"
         type="password"
         value={newUser.passwordConfirm}
-        onChange={handleNewUser}
+        onChange={handleChange}
       />
       <button onClick={handleSubmit}>submit</button>
       {errorMsg && <div className="alert alert-danger">{errorMsg}</div>}

@@ -1,32 +1,22 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
+import react, { useState } from "react";
+import { HomeNav } from "./components/HomeNav";
+import { SideNav } from "./components/SideNav";
+import { HomePageMenu } from "./components/HomePageMenu";
+import { SideSrollCard } from "./components/SideScrollCard";
 import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [showSideNav, setShowSideNav] = useState<boolean>(false);
 
   return (
     <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          COUNT is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <HomeNav showSideNav={showSideNav} setShowSideNav={setShowSideNav} />
+      <HomePageMenu />
+      <SideSrollCard />
+      <SideSrollCard />
+      {showSideNav && (
+        <SideNav showSideNav={showSideNav} setShowSideNav={setShowSideNav} />
+      )}
     </div>
   );
 }

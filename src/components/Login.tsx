@@ -1,15 +1,20 @@
 import React, { useState } from "react";
+
+interface UserCredentialLogin {
+  username: string;
+  password: string;
+}
+
 export default function Login() {
-  interface User {
-    username: string;
-    password: string;
-  }
-  const [existingUser, setExistingUser] = useState<User>({
+  const initalUser: UserCredentialLogin = {
     username: "",
     password: "",
-  });
+  };
+
+  const [existingUser, setExistingUser] =
+    useState<UserCredentialLogin>(initalUser);
   // if user does not exist in database
-  const [errorMsg, setErrorMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState<string>("");
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setExistingUser({
       ...existingUser,
