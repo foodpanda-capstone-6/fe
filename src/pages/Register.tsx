@@ -9,7 +9,8 @@ import {
   Button,
   Link,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface UserRegisterInputs {
   username: string;
@@ -18,13 +19,25 @@ interface UserRegisterInputs {
   email: string;
 }
 
-export default function Register() {
-  const initalUser: UserRegisterInputs = {
-    username: "",
-    password: "",
-    passwordConfirm: "",
-    email: "",
-  };
+interface Props {
+  isLogin: boolean;
+}
+
+const initalUser: UserRegisterInputs = {
+  username: "",
+  password: "",
+  passwordConfirm: "",
+  email: "",
+};
+
+const Register: React.FC<Props> = ({ isLogin }) => {
+  const navigate: (path: string) => void = useNavigate();
+
+  useEffect(() => {
+    if (isLogin === true) {
+      navigate("/");
+    }
+  }, []);
 
   const [newUser, setNewUser] = useState<UserRegisterInputs>(initalUser);
   const [errorMsg, setErrorMsg] = useState<string>("");
@@ -161,7 +174,7 @@ export default function Register() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/login" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
@@ -172,4 +185,6 @@ export default function Register() {
       {errorMsg && <div className="alert alert-danger">{errorMsg}</div>}
     </>
   );
-}
+};
+
+export default Register;

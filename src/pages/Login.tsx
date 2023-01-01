@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import {
   Box,
@@ -8,13 +8,25 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 interface UserCredentialLogin {
   username: string;
   password: string;
 }
 
-export default function Login() {
+interface Props {
+  isLogin: boolean;
+}
+
+const Login: React.FC<Props> = ({ isLogin }) => {
+  const navigate: (path: string) => void = useNavigate();
+
+  useEffect(() => {
+    if (isLogin === true) {
+      navigate("/");
+    }
+  }, []);
   const initalUser: UserCredentialLogin = {
     username: "",
     password: "",
@@ -85,9 +97,18 @@ export default function Login() {
           >
             Sign In
           </Button>
+          <Grid container justifyContent="flex-end">
+            <Grid item>
+              <Link href="/register" variant="body2">
+                No account yet? Register here
+              </Link>
+            </Grid>
+          </Grid>
         </Box>
       </Box>
       {errorMsg && <div className="alert alert-danger">{errorMsg}</div>}
     </>
   );
-}
+};
+
+export default Login;

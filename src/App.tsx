@@ -1,24 +1,27 @@
-import react, { useState } from "react";
+import React, { useState } from "react";
 import "./App.css";
-import { SideSrollCard } from "./components/SideScrollCard";
+import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
-import HomePageMenu from "./components/HomePageMenu";
-import Login from "./components/Login";
-import Register from "./components/Register";
-import UserVoucherPage from "./components/UserVoucherPage";
+import HomePageMenu from "./pages/HomePageMenu";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import UserVoucherPage from "./pages/UserVoucherPage";
 
 function App() {
-  const [showSideNav, setShowSideNav] = useState<boolean>(false);
+  const [isLogin, setIsLogin] = useState<boolean>(true);
 
   return (
     <div className="App">
-      <Header sections={[]} title={"foodpanda"} />
-      <HomePageMenu />
-      <SideSrollCard />
-      <SideSrollCard />
-      {/* <Login />
-      <Register />
-      <UserVoucherPage /> */}
+      {isLogin && <Header sections={[]} title={"foodpanda"} />}
+      <Routes>
+        <Route path="/login" element={<Login isLogin={isLogin} />} />
+        <Route path="/register" element={<Register isLogin={isLogin} />} />
+        <Route path="/" element={<HomePageMenu isLogin={isLogin} />} />
+        <Route
+          path="/voucher/user"
+          element={<UserVoucherPage isLogin={isLogin} />}
+        />
+      </Routes>
     </div>
   );
 }

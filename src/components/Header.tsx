@@ -1,4 +1,3 @@
-import * as React from "react";
 import Toolbar from "@mui/material/Toolbar";
 import SearchIcon from "@mui/icons-material/Search";
 import Typography from "@mui/material/Typography";
@@ -6,7 +5,9 @@ import MenuIcon from "@mui/icons-material/Menu";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
-import { SideDrawer } from "./SideDrawer";
+import SideDrawer from "./SideDrawer";
+import { useNavigate } from "react-router-dom";
+import React from "react";
 
 interface HeaderProps {
   sections: ReadonlyArray<{
@@ -57,8 +58,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function Header(props: HeaderProps) {
-  const { sections, title } = props;
+const Header: React.FC<HeaderProps> = ({ sections, title }) => {
+  const navigate: (path: string) => void = useNavigate();
 
   return (
     <React.Fragment>
@@ -70,6 +71,7 @@ export default function Header(props: HeaderProps) {
       >
         <SideDrawer />
         <Typography
+          onClick={() => navigate("/")}
           variant="h6"
           color="inherit"
           align="center"
@@ -97,4 +99,6 @@ export default function Header(props: HeaderProps) {
       </Toolbar>
     </React.Fragment>
   );
-}
+};
+
+export default Header;

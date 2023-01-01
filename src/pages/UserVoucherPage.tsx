@@ -1,4 +1,3 @@
-import * as React from "react";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -13,16 +12,28 @@ import {
   Tabs,
   Typography,
 } from "@mui/material";
-import Header from "./Header";
+import Header from "../components/Header";
+import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
 
-export default function UserVoucherPage() {
+interface Props {
+  isLogin: boolean;
+}
+const UserVoucherPage: React.FC<Props> = ({ isLogin }) => {
+  const navigate: (path: string) => void = useNavigate();
+
+  useEffect(() => {
+    if (isLogin === false) {
+      navigate("/login");
+    }
+  }, []);
+
   const [value, setValue] = React.useState("one");
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
   return (
     <>
-      <Header sections={[]} title={"foodpanda"} />
       <main>
         <Box>
           <Container disableGutters>
@@ -32,7 +43,7 @@ export default function UserVoucherPage() {
                 width: "100%",
               }}
               alt="PauPauYourVouchers"
-              src="src/assets/images/YourVouchersImg.png"
+              src="../src/assets/images/YourVouchersImg.png"
             />
             <Stack
               sx={{ pt: 4 }}
@@ -128,4 +139,6 @@ export default function UserVoucherPage() {
       </main>
     </>
   );
-}
+};
+
+export default UserVoucherPage;
