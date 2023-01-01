@@ -53,4 +53,4 @@ const SideSrollCard: React.FC = () => {
   );
 };
 
-export { SideSrollCard };
+export default SideSrollCard;

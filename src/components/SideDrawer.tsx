@@ -11,11 +11,14 @@ import {
   Toolbar,
   Button,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
 
-export const SideDrawer = () => {
+const SideDrawer = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const navigate: (path: string) => void = useNavigate();
 
   return (
     <>
@@ -88,7 +91,13 @@ export const SideDrawer = () => {
               </ListItem>
               <ListItem disablePadding>
                 <ListItemButton>
-                  <ListItemText primary="Vouchers" />
+                  <ListItemText
+                    primary="Vouchers"
+                    onClick={() => {
+                      navigate("/voucher/user");
+                      setIsDrawerOpen(!isDrawerOpen);
+                    }}
+                  />
                 </ListItemButton>
               </ListItem>
               <ListItem disablePadding>
@@ -118,3 +127,5 @@ export const SideDrawer = () => {
     </>
   );
 };
+
+export default SideDrawer;
