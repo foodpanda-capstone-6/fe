@@ -17,6 +17,8 @@ interface HeaderProps {
   title: string;
 }
 
+const test = "asd";
+
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
