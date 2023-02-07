@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
+import data from "../database/user.json";
 import {
   Box,
   FormControlLabel,
@@ -7,8 +8,10 @@ import {
   Link,
   TextField,
   Typography,
+  Alert,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { setCookie } from "../ultis/helperCookie";
 
 interface UserCredentialLogin {
   username: string;
@@ -17,36 +20,49 @@ interface UserCredentialLogin {
 
 interface Props {
   isLogin: boolean;
+  setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Login: React.FC<Props> = ({ isLogin }) => {
+const Login: React.FC<Props> = ({ isLogin, setIsLogin }) => {
   const navigate: (path: string) => void = useNavigate();
 
   useEffect(() => {
     if (isLogin === true) {
       navigate("/");
     }
-  }, []);
+  });
+
   const initalUser: UserCredentialLogin = {
     username: "",
     password: "",
   };
 
-  const [existingUser, setExistingUser] =
-    useState<UserCredentialLogin>(initalUser);
-  // if user does not exist in database
-  const [errorMsg, setErrorMsg] = useState<string>("");
+  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    for (let i in data) {
+      if (data[i].username === existingUser.username) {
+        if (data[i].password !== existingUser.password) {
+          return setErrorMsg("You have entered the wrong password");
+        }
+        setCookie(existingUser.username);
+        setIsLogin(true);
+        return;
+      }
+    }
+    return setErrorMsg(`Username does not exist`);
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setExistingUser({
       ...existingUser,
       [e.target.name]: e.target.value,
     });
   };
-  const handleLogin = () => {
-    // check user in database
-    // if username does not exist, password is wrong, set errormsg
-    // if successful, then set session cookie
-  };
+
+  const [existingUser, setExistingUser] =
+    useState<UserCredentialLogin>(initalUser);
+  const [errorMsg, setErrorMsg] = useState<string>("");
+
   return (
     <>
       <Box
@@ -60,32 +76,40 @@ const Login: React.FC<Props> = ({ isLogin }) => {
         <Typography component="h1" variant="h5">
           welcome to foodpanda!
         </Typography>
-        <Box component="form" noValidate sx={{ mt: 10, mr: 3, ml: 3 }}>
+
+        <Box
+          component="form"
+          noValidate
+          sx={{ mt: 10, mr: 3, ml: 3 }}
+          onSubmit={(e) => handleLogin(e)}
+        >
+          {errorMsg && <Alert severity="error">{errorMsg}</Alert>}
           <TextField
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
+            label="Username"
+            name="username"
+            value={existingUser.username}
             autoComplete="email"
             autoFocus
+            onChange={handleChange}
           />
           <TextField
             margin="normal"
             required
             fullWidth
+            value={existingUser.password}
+            onChange={handleChange}
             name="password"
             label="Password"
             type="password"
-            id="password"
             autoComplete="current-password"
           />
           <Button
             type="submit"
             fullWidth
             variant="contained"
-            onClick={handleLogin}
             sx={{
               ":hover": {
                 backgroundColor: "#E21B70",
@@ -106,7 +130,6 @@ const Login: React.FC<Props> = ({ isLogin }) => {
           </Grid>
         </Box>
       </Box>
-      {errorMsg && <div className="alert alert-danger">{errorMsg}</div>}
     </>
   );
 };
