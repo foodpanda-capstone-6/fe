@@ -1,4 +1,5 @@
 [
-  { "id": 1, "username": "kaichung", "password": "ilovepanda" },
-  { "id": 2, "username": "noellim", "password": "pandaforlife" }
+  { "id": 1, "username": "kai", "password": "ilovepanda" },
+  { "id": 2, "username": "noel", "password": "pandaforlife" },
+  { "id": 3, "username": "naz", "password": "panda4ever" }
 ]

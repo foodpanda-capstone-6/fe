@@ -56,12 +56,57 @@ const UserVoucherPage: React.FC<Props> = ({ isLogin }) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const voucherValue = [10, 25, 50, 100];
+  const myVoucher = [
+    {
+      id: 1,
+      code: "5h2d90vq11",
+      value: 10,
+      owner: 1,
+      expire: "12-12-2028",
+    },
+    {
+      id: 2,
+      code: "5h2d90vq11",
+      value: 50,
+      owner: 1,
+      expire: "18-04-2029",
+    },
+    {
+      id: 4,
+      code: "5h2d90vq11",
+      value: 30,
+      owner: 1,
+      expire: "05-08-2025",
+    },
+  ];
 
   useEffect(() => {
     if (isLogin === false) {
       navigate("/login");
     }
   }, [isLogin]);
+
+  const showMyVoucher = (voucher: any) => {
+    return (
+      <Card style={{ marginTop: "6px" }}>
+        <CardActionArea>
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="div">
+              ${voucher.value} PFD
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Expiry {voucher.expire}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+        <CardActions>
+          <Button size="small" sx={{ color: "#FF2B85" }} onClick={handleOpen}>
+            Send
+          </Button>
+        </CardActions>
+      </Card>
+    );
+  };
 
   const [value, setValue] = React.useState("myVoucher");
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -101,27 +146,7 @@ const UserVoucherPage: React.FC<Props> = ({ isLogin }) => {
                 </TabList>
               </Stack>
               <TabPanel value="myVoucher">
-                <Card style={{ marginTop: "6px" }}>
-                  <CardActionArea>
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        $10 PFD
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        Expiry
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                  <CardActions>
-                    <Button
-                      size="small"
-                      sx={{ color: "#FF2B85" }}
-                      onClick={handleOpen}
-                    >
-                      Send
-                    </Button>
-                  </CardActions>
-                </Card>
+                {myVoucher.map((voucher) => showMyVoucher(voucher))}
               </TabPanel>
               <TabPanel value="voucherStore">
                 {voucherValue.map((value) => showVoucherCard(value))}
