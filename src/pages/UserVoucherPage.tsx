@@ -7,10 +7,8 @@ import {
   CardActionArea,
   CardActions,
   CardContent,
-  CardMedia,
   Modal,
   Tab,
-  Tabs,
   Typography,
 } from "@mui/material";
 import { TabPanel, TabContext, TabList } from "@mui/lab";
@@ -20,10 +18,13 @@ import React, { useEffect, useState } from "react";
 interface Props {
   isLogin: boolean;
 }
+
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
   left: "50%",
+  width: "200px",
+  height: "300px",
   transform: "translate(-50%, -50%)",
   bgcolor: "background.paper",
   border: "2px solid #000",
@@ -31,11 +32,30 @@ const style = {
   p: 4,
 };
 
+const showVoucherCard = (value: number) => {
+  return (
+    <Card style={{ marginTop: "15px" }}>
+      <CardContent>
+        <Typography variant="h4" component="div">
+          ${value} FPD
+        </Typography>
+        <Typography variant="body2" style={{ marginTop: "5px" }}>
+          ${value} gift card that can be used with any merchant
+        </Typography>
+      </CardContent>
+      <CardActions>
+        <Button size="small">Purchase</Button>
+      </CardActions>
+    </Card>
+  );
+};
+
 const UserVoucherPage: React.FC<Props> = ({ isLogin }) => {
   const navigate: (path: string) => void = useNavigate();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const voucherValue = [10, 25, 50, 100];
 
   useEffect(() => {
     if (isLogin === false) {
@@ -103,7 +123,9 @@ const UserVoucherPage: React.FC<Props> = ({ isLogin }) => {
                   </CardActions>
                 </Card>
               </TabPanel>
-              <TabPanel value="voucherStore">my store</TabPanel>
+              <TabPanel value="voucherStore">
+                {voucherValue.map((value) => showVoucherCard(value))}
+              </TabPanel>
             </TabContext>
           </Container>
         </Box>
