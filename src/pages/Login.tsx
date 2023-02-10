@@ -3,7 +3,6 @@ import Button from "@mui/material/Button";
 import data from "../database/user.json";
 import {
   Box,
-  FormControlLabel,
   Grid,
   Link,
   TextField,
@@ -76,7 +75,6 @@ const Login: React.FC<Props> = ({ isLogin, setIsLogin }) => {
         <Typography component="h1" variant="h5">
           welcome to foodpanda!
         </Typography>
-
         <Box
           component="form"
           noValidate
