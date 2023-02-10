@@ -14,8 +14,19 @@ import {
 import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
+import { eraseCookie } from "../ultis/helperCookie";
 
-const SideDrawer = () => {
+interface Props {
+  setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
+  username: string | null;
+}
+
+const SideDrawer = ({ setIsLogin, username }: Props) => {
+  const handleClick = () => {
+    eraseCookie("username");
+    setIsLogin(false);
+  };
+
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const navigate: (path: string) => void = useNavigate();
@@ -49,7 +60,7 @@ const SideDrawer = () => {
                 <ListItemButton>
                   <ListItemText
                     primaryTypographyProps={{ fontSize: "18px" }}
-                    primary="Name"
+                    primary={username}
                   />
                 </ListItemButton>
               </ListItem>
@@ -117,7 +128,7 @@ const SideDrawer = () => {
               </ListItem>
               <ListItem disablePadding>
                 <ListItemButton>
-                  <ListItemText primary="Log out" />
+                  <ListItemText primary="Log out" onClick={handleClick} />
                 </ListItemButton>
               </ListItem>
             </List>

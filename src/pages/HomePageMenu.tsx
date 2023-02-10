@@ -25,7 +25,7 @@ const HomePageMenu: react.FC<Props> = ({ isLogin }) => {
     if (isLogin === false) {
       navigate("/login");
     }
-  }, []);
+  }, [isLogin]);
 
   return (
     <>

@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "code": "5h2d90vq11",
+    "value": 10,
+    "owner": 1,
+    "expire": "12-12-2028"
+  },
+  {
+    "id": 2,
+    "code": "5h2d90vq11",
+    "value": 50,
+    "owner": 1,
+    "expire": "18-04-2029"
+  },
+  {
+    "id": 3,
+    "code": "5h2d90vq11",
+    "value": 80,
+    "owner": 2,
+    "expire": "24-09-2024"
+  },
+  {
+    "id": 4,
+    "code": "5h2d90vq11",
+    "value": 30,
+    "owner": 1,
+    "expire": "05-08-2025"
+  }
+]

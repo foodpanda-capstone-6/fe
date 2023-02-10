@@ -1,4 +1,4 @@
-FROM node:19-alpine3.16 as dev
+FROM node:19.3.0-alpine as dev
 WORKDIR /app
 
 ENV DEVELOPMENT_PORT=$DEVELOPMENT_PORT
