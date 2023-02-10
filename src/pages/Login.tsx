@@ -22,7 +22,7 @@ interface Props {
   setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Login: React.FC<Props> = ({ isLogin, setIsLogin }) => {
+const Login: React.FC<Props> = ({ isLogin, setIsLogin: SetAuthenticated }) => {
   const navigate: (path: string) => void = useNavigate();
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const Login: React.FC<Props> = ({ isLogin, setIsLogin }) => {
           return setErrorMsg("You have entered the wrong password");
         }
         setCookie(existingUser.username);
-        setIsLogin(true);
+        SetAuthenticated(true);
         return;
       }
     }
