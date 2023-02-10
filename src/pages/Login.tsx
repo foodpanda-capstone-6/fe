@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
-import data from "../database/user.json";
+import DataUserCredentialsMock from "../database/user.json";
 import {
   Box,
   Grid,
@@ -38,9 +38,9 @@ const Login: React.FC<Props> = ({ isLogin, setIsLogin }) => {
 
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    for (let i in data) {
-      if (data[i].username === existingUser.username) {
-        if (data[i].password !== existingUser.password) {
+    for (let i in DataUserCredentialsMock) {
+      if (DataUserCredentialsMock[i].username === existingUser.username) {
+        if (DataUserCredentialsMock[i].password !== existingUser.password) {
           return setErrorMsg("You have entered the wrong password");
         }
         setCookie(existingUser.username);
