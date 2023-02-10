@@ -1,13 +1,7 @@
-export const setCookie = (name: string) => {
-  var expires = "";
-  var date = new Date();
-  date.setTime(date.getTime() + 30 * 24 * 60 * 60 * 1000);
-  expires = "; expires=" + date.toUTCString();
-  document.cookie = "username" + "=" + (name || "") + expires + "; path=/";
-};
+const AUTH_COOKIE_KEY = "username";
 
-export const getCookie = (name: string): string | null => {
-  var nameEQ = name + "=";
+const getCookieValue = (key: string): string | null => {
+  var nameEQ = key + "=";
   var ca = document.cookie.split(";");
   for (var i = 0; i < ca.length; i++) {
     var c = ca[i];
@@ -17,6 +11,25 @@ export const getCookie = (name: string): string | null => {
   return null;
 };
 
-export const eraseCookie = (name: string) => {
+const eraseCookie = (name: string) => {
   document.cookie = name + "=; Max-Age=-99999999;";
+};
+
+
+export const setAuthCookie = (value: string) => {
+  var expires = "";
+  var date = new Date();
+  date.setTime(date.getTime() + 30 * 24 * 60 * 60 * 1000);
+  expires = "; expires=" + date.toUTCString();
+  document.cookie =
+    AUTH_COOKIE_KEY + "=" + (value || "") + expires + "; path=/";
+};
+
+
+export const getAuthCookie = (): ReturnType<typeof getCookieValue> => {
+  return getCookieValue(AUTH_COOKIE_KEY);
+};
+
+export const eraseAuthCookie = () => {
+  eraseCookie(AUTH_COOKIE_KEY);
 };

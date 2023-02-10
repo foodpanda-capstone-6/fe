@@ -6,14 +6,14 @@ import HomePageMenu from "./pages/HomePageMenu";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import UserVoucherPage from "./pages/UserVoucherPage";
-import { getCookie } from "./ultis/helperCookie";
+import { getAuthCookie } from "./ultis/helperCookie";
 
 function App() {
   const [isLogin, setIsLogin] = useState<boolean>(false);
   const [username, setUsername] = useState<string | null>(null);
 
   useEffect(() => {
-    const cookie = getCookie("username");
+    const cookie = getAuthCookie();
     setUsername(cookie);
     console.log(`is this cookie username: (${username})`);
 

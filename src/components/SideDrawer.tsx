@@ -14,7 +14,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
-import { eraseCookie } from "../ultis/helperCookie";
+import { eraseAuthCookie } from "../ultis/helperCookie";
 
 interface Props {
   setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,7 +23,7 @@ interface Props {
 
 const SideDrawer = ({ setIsLogin, username }: Props) => {
   const handleClick = () => {
-    eraseCookie("username");
+    eraseAuthCookie()
     setIsLogin(false);
   };
 

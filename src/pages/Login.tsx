@@ -10,7 +10,7 @@ import {
   Alert,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { setCookie } from "../ultis/helperCookie";
+import { setAuthCookie } from "../ultis/helperCookie";
 
 interface UserCredentialLogin {
   username: string;
@@ -43,7 +43,7 @@ const Login: React.FC<Props> = ({ isLogin, setIsLogin: SetAuthenticated }) => {
         if (DataUserCredentialsMock[i].password !== existingUser.password) {
           return setErrorMsg("You have entered the wrong password");
         }
-        setCookie(existingUser.username);
+        setAuthCookie(existingUser.username);
         SetAuthenticated(true);
         return;
       }
