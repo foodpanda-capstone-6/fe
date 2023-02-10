@@ -6,42 +6,45 @@ import HomePageMenu from "./pages/HomePageMenu";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import UserVoucherPage from "./pages/UserVoucherPage";
-import { getAuthCookie } from "./ultis/helperCookie";
+import { getAuthCookie,getUsernameFromCookie } from "./ultis/helperCookie";
 
 function App() {
-  const [isLogin, setIsLogin] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [username, setUsername] = useState<string | null>(null);
 
   useEffect(() => {
     const cookie = getAuthCookie();
-    setUsername(cookie);
-    console.log(`is this cookie username: (${username})`);
 
-    if (username !== null) {
-      return setIsLogin(true);
+    if(cookie) {
+      const username = getUsernameFromCookie();
+      setUsername(username);
+      console.log(`cookie username: (${username})`);
+      setIsAuthenticated(true);
+    }else {
+      setIsAuthenticated(false);
     }
   }, [username]);
 
   return (
     <div className="App">
-      {isLogin && (
+      {isAuthenticated && (
         <Header
           sections={[]}
           title={"foodpanda"}
-          setIsLogin={setIsLogin}
+          setIsAuthenticated={setIsAuthenticated}
           username={username}
         />
       )}
       <Routes>
         <Route
           path="/login"
-          element={<Login isLogin={isLogin} setIsLogin={setIsLogin} />}
+          element={<Login isAuthenticated={isAuthenticated} setAuthenticated={setIsAuthenticated} />}
         />
-        <Route path="/register" element={<Register isLogin={isLogin} />} />
-        <Route path="/" element={<HomePageMenu isLogin={isLogin} />} />
+        <Route path="/register" element={<Register isLogin={isAuthenticated} />} />
+        <Route path="/" element={<HomePageMenu isLogin={isAuthenticated} />} />
         <Route
           path="/voucher/:user"
-          element={<UserVoucherPage isLogin={isLogin} />}
+          element={<UserVoucherPage isLogin={isAuthenticated} />}
         />
       </Routes>
     </div>

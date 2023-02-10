@@ -30,6 +30,8 @@ export const getAuthCookie = (): ReturnType<typeof getCookieValue> => {
   return getCookieValue(AUTH_COOKIE_KEY);
 };
 
+export const getUsernameFromCookie = getAuthCookie
+
 export const eraseAuthCookie = () => {
   eraseCookie(AUTH_COOKIE_KEY);
 };

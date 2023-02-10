@@ -15,7 +15,7 @@ interface HeaderProps {
     url: string;
   }>;
   title: string;
-  setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
   username: string | null;
 }
 
@@ -63,9 +63,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const Header: React.FC<HeaderProps> = ({
-  sections,
   title,
-  setIsLogin,
+  setIsAuthenticated,
   username,
 }) => {
   const navigate: (path: string) => void = useNavigate();
@@ -78,7 +77,7 @@ const Header: React.FC<HeaderProps> = ({
           color: "#FFFFFF",
         }}
       >
-        <SideDrawer setIsLogin={setIsLogin} username={username} />
+        <SideDrawer setIsLogin={setIsAuthenticated} username={username} />
         <Typography
           onClick={() => navigate("/")}
           variant="h6"
