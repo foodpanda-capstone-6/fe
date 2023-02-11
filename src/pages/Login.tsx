@@ -1,51 +1,49 @@
 import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
-import data from "../database/user.json";
-import {
-  Box,
-  FormControlLabel,
-  Grid,
-  Link,
-  TextField,
-  Typography,
-  Alert,
-} from "@mui/material";
+import DataUserCredentialsMock from "../database/user.json";
+import { Box, Grid, Link, TextField, Typography, Alert } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { setCookie } from "../ultis/helperCookie";
+import { setAuthCookie } from "../ultis/helperCookie";
 
-interface UserCredentialLogin {
+interface UserCredentialLoginFields {
   username: string;
   password: string;
 }
 
 interface Props {
-  isLogin: boolean;
-  setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
+  isAuthenticated: boolean;
+  setAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Login: React.FC<Props> = ({ isLogin, setIsLogin }) => {
+const tryLogin = () => {
+  return [];
+};
+
+const initialUserFields = (): UserCredentialLoginFields => {
+  return {
+    username: "",
+    password: "",
+  };
+};
+
+const Login: React.FC<Props> = ({ isAuthenticated, setAuthenticated: SetAuthenticated }) => {
   const navigate: (path: string) => void = useNavigate();
 
   useEffect(() => {
-    if (isLogin === true) {
+    if (isAuthenticated === true) {
       navigate("/");
     }
   });
 
-  const initalUser: UserCredentialLogin = {
-    username: "",
-    password: "",
-  };
-
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    for (let i in data) {
-      if (data[i].username === existingUser.username) {
-        if (data[i].password !== existingUser.password) {
+    for (const { username, password } of DataUserCredentialsMock) {
+      if (username === userFields.username) {
+        if (password !== userFields.password) {
           return setErrorMsg("You have entered the wrong password");
         }
-        setCookie(existingUser.username);
-        setIsLogin(true);
+        setAuthCookie(userFields.username);
+        SetAuthenticated(true);
         return;
       }
     }
@@ -53,14 +51,14 @@ const Login: React.FC<Props> = ({ isLogin, setIsLogin }) => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setExistingUser({
-      ...existingUser,
+    setUserFields({
+      ...userFields,
       [e.target.name]: e.target.value,
     });
   };
 
-  const [existingUser, setExistingUser] =
-    useState<UserCredentialLogin>(initalUser);
+  const [userFields, setUserFields] =
+    useState<UserCredentialLoginFields>(initialUserFields());
   const [errorMsg, setErrorMsg] = useState<string>("");
 
   return (
@@ -76,7 +74,6 @@ const Login: React.FC<Props> = ({ isLogin, setIsLogin }) => {
         <Typography component="h1" variant="h5">
           welcome to foodpanda!
         </Typography>
-
         <Box
           component="form"
           noValidate
@@ -90,7 +87,7 @@ const Login: React.FC<Props> = ({ isLogin, setIsLogin }) => {
             fullWidth
             label="Username"
             name="username"
-            value={existingUser.username}
+            value={userFields.username}
             autoComplete="email"
             autoFocus
             onChange={handleChange}
@@ -99,7 +96,7 @@ const Login: React.FC<Props> = ({ isLogin, setIsLogin }) => {
             margin="normal"
             required
             fullWidth
-            value={existingUser.password}
+            value={userFields.password}
             onChange={handleChange}
             name="password"
             label="Password"
