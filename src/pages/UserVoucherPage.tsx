@@ -7,19 +7,23 @@ import {
   CardActionArea,
   CardActions,
   CardContent,
+  Grid,
   Modal,
+  Popover,
   Tab,
   Typography,
 } from "@mui/material";
 import { TabPanel, TabContext, TabList } from "@mui/lab";
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
+import InfoIcon from "@mui/icons-material/Info";
+import { Opacity } from "@mui/icons-material";
 
 interface Props {
   isLogin: boolean;
 }
 
-const style = {
+const InfoModalStyle = {
   position: "absolute" as "absolute",
   top: "50%",
   left: "50%",
@@ -27,34 +31,51 @@ const style = {
   height: "300px",
   transform: "translate(-50%, -50%)",
   bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
+  boxShadow: 1,
   p: 4,
 };
 
 const showVoucherCard = (value: number) => {
   return (
-    <Card style={{ marginTop: "15px" }}>
+    <Card
+      sx={{
+        bgcolor: "#FF2B85",
+        color: "white",
+        display: "flex",
+        justifyContent: "center",
+        height: "150px",
+        width: "150px",
+        boxShadow: 3,
+        marginLeft: "5px",
+        marginTop: "5px",
+      }}
+      onClick={() => console.log(`asdasd`)}
+    >
       <CardContent>
-        <Typography variant="h4" component="div">
-          ${value} FPD
+        <Typography
+          sx={{ fontSize: "50px", paddingTop: "10px", fontWeight: "bolder" }}
+        >
+          ${value}
         </Typography>
-        <Typography variant="body2" style={{ marginTop: "5px" }}>
-          ${value} gift card that can be used with any merchant
+        <Typography
+          sx={{
+            paddingBottom: "30px",
+            justifySelf: "center",
+            fontWeight: "bolder",
+            fontSize: "10px",
+          }}
+        >
+          foodpanda voucher
         </Typography>
       </CardContent>
-      <CardActions>
-        <Button size="small">Purchase</Button>
-      </CardActions>
     </Card>
   );
 };
 
 const UserVoucherPage: React.FC<Props> = ({ isLogin }) => {
   const navigate: (path: string) => void = useNavigate();
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [openInfoModal, setOpenInfoModal] = useState(false);
+  const [openCopyModal, setOpenCopyModal] = useState(false);
   const voucherValue = [10, 25, 50, 100];
   const myVoucher = [
     {
@@ -88,23 +109,64 @@ const UserVoucherPage: React.FC<Props> = ({ isLogin }) => {
 
   const showMyVoucher = (voucher: any) => {
     return (
-      <Card style={{ marginTop: "6px" }}>
-        <CardActionArea>
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              ${voucher.value} PFD
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Expiry {voucher.expire}
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-        <CardActions>
-          <Button size="small" sx={{ color: "#FF2B85" }} onClick={handleOpen}>
-            Send
-          </Button>
-        </CardActions>
-      </Card>
+      <Box
+        sx={{
+          paddingTop: "10px",
+          paddingLeft: "10px",
+          mt: "15px",
+          width: "99%",
+          height: "80px",
+          borderRadius: "10%",
+          boxShadow: 3,
+        }}
+      >
+        <Grid container>
+          <Grid xs={8}>
+            <Grid>
+              <Typography gutterBottom variant="h5" component="div">
+                ${voucher.value} FPD
+                <Button
+                  sx={{ color: "#FF2B85", mb: "2px" }}
+                  onClick={() => {
+                    setOpenInfoModal(true);
+                  }}
+                >
+                  <InfoIcon fontSize="small" sx={{ color: "#FF7599" }} />
+                </Button>
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Expiry {voucher.expire}
+              </Typography>
+            </Grid>
+          </Grid>
+          <Grid xs={4} container justifyContent="center" alignItems="center">
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              sx={{
+                backgroundColor: "#FF2B85",
+                height: "25px",
+                width: "70px",
+                borderRadius: "10px",
+              }}
+              onClick={() => {
+                navigator.clipboard.writeText("hello world");
+                setOpenCopyModal(true);
+                setTimeout(() => {
+                  setOpenCopyModal(false);
+                }, 1000);
+              }}
+            >
+              <Typography
+                sx={{ fontSize: "11px", color: "white", fontWeight: "bold" }}
+              >
+                copy code
+              </Typography>
+            </Box>
+          </Grid>
+        </Grid>
+      </Box>
     );
   };
 
@@ -112,7 +174,7 @@ const UserVoucherPage: React.FC<Props> = ({ isLogin }) => {
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
-  console.log(value);
+
   return (
     <>
       <main>
@@ -146,30 +208,45 @@ const UserVoucherPage: React.FC<Props> = ({ isLogin }) => {
                 </TabList>
               </Stack>
               <TabPanel value="myVoucher">
+                <Typography></Typography>
                 {myVoucher.map((voucher) => showMyVoucher(voucher))}
               </TabPanel>
               <TabPanel value="voucherStore">
-                {voucherValue.map((value) => showVoucherCard(value))}
+                <Box>
+                  <Grid container>
+                    {voucherValue.map((value) => showVoucherCard(value))}
+                  </Grid>
+                </Box>
               </TabPanel>
             </TabContext>
           </Container>
         </Box>
       </main>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
+      <Modal open={openInfoModal} onClose={() => setOpenInfoModal(false)}>
+        <Box sx={InfoModalStyle}>
+          <Typography id="modal-modal-title" variant="h6">
+            Send your gift card
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+            <br />
+            Click on the voucher and you will copy the voucher code, you can
+            then share it with anyone. <br />
+            <br />
+            Please note that vouchers are only transforable once, keep it safe
           </Typography>
         </Box>
       </Modal>
+
+      <Popover
+        open={openCopyModal}
+        onClose={() => setOpenCopyModal(false)}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+      >
+        <Typography sx={{ p: 2 }}>Voucher code copied!</Typography>
+      </Popover>
     </>
   );
 };
