@@ -7,17 +7,24 @@ import {
   CardActionArea,
   CardActions,
   CardContent,
+  Drawer,
+  FormControl,
+  FormHelperText,
   Grid,
+  Input,
   Modal,
   Popover,
   Tab,
+  TextField,
   Typography,
+  styled,
 } from "@mui/material";
 import { TabPanel, TabContext, TabList } from "@mui/lab";
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import InfoIcon from "@mui/icons-material/Info";
-import { Opacity } from "@mui/icons-material";
+import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
+import { PinkButton } from "../ultis/usefulComponent";
 
 interface Props {
   isLogin: boolean;
@@ -76,6 +83,8 @@ const UserVoucherPage: React.FC<Props> = ({ isLogin }) => {
   const navigate: (path: string) => void = useNavigate();
   const [openInfoModal, setOpenInfoModal] = useState(false);
   const [openCopyModal, setOpenCopyModal] = useState(false);
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const [addErrorMsg, setAddErrorMsg] = useState("code does not exist");
   const voucherValue = [10, 25, 50, 100];
   const myVoucher = [
     {
@@ -140,15 +149,10 @@ const UserVoucherPage: React.FC<Props> = ({ isLogin }) => {
             </Grid>
           </Grid>
           <Grid xs={4} container justifyContent="center" alignItems="center">
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
+            <PinkButton
               sx={{
-                backgroundColor: "#FF2B85",
-                height: "25px",
+                height: "20px",
                 width: "70px",
-                borderRadius: "10px",
               }}
               onClick={() => {
                 navigator.clipboard.writeText("hello world");
@@ -159,11 +163,11 @@ const UserVoucherPage: React.FC<Props> = ({ isLogin }) => {
               }}
             >
               <Typography
-                sx={{ fontSize: "11px", color: "white", fontWeight: "bold" }}
+                sx={{ fontSize: "8px", color: "white", fontWeight: "bold" }}
               >
                 copy code
               </Typography>
-            </Box>
+            </PinkButton>
           </Grid>
         </Grid>
       </Box>
@@ -208,7 +212,24 @@ const UserVoucherPage: React.FC<Props> = ({ isLogin }) => {
                 </TabList>
               </Stack>
               <TabPanel value="myVoucher">
-                <Typography></Typography>
+                <Box
+                  sx={{
+                    boxshadow: 1,
+                    borderRadius: "5px",
+                    backgroundColor: "white",
+                    color: "#FF2B85",
+                    alignContent: "center",
+                    justifyContent: "center",
+                    fontWeight: "bolder",
+                    boxShadow: "3",
+                  }}
+                  onClick={() => setOpenDrawer(true)}
+                >
+                  <Typography align="center">
+                    <ConfirmationNumberIcon sx={{ verticalAlign: "middle" }} />
+                    {"  "}Add a Voucher
+                  </Typography>
+                </Box>
                 {myVoucher.map((voucher) => showMyVoucher(voucher))}
               </TabPanel>
               <TabPanel value="voucherStore">
@@ -247,6 +268,26 @@ const UserVoucherPage: React.FC<Props> = ({ isLogin }) => {
       >
         <Typography sx={{ p: 2 }}>Voucher code copied!</Typography>
       </Popover>
+      <Drawer
+        anchor="bottom"
+        open={openDrawer}
+        onClose={() => setOpenDrawer(false)}
+      >
+        <Box sx={{ height: "12rem", marginX: "15px", paddingTop: "15px" }}>
+          <Typography sx={{ fontWeight: "bold", fontSize: "15px" }}>
+            {" "}
+            Add a Voucher
+          </Typography>
+
+          <TextField
+            sx={{ marginTop: "15px", width: "100%" }}
+            label="Voucher Code"
+            variant="outlined"
+          />
+          <FormHelperText sx={{ color: "red" }}>{addErrorMsg}</FormHelperText>
+          <PinkButton sx={{ marginTop: "15px", width: "100%" }}>Add</PinkButton>
+        </Box>
+      </Drawer>
     </>
   );
 };
