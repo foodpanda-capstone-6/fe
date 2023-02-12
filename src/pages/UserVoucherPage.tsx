@@ -245,10 +245,8 @@ const UserVoucherPage: React.FC<Props> = ({ isLogin }) => {
       </main>
       <Modal open={openInfoModal} onClose={() => setOpenInfoModal(false)}>
         <Box sx={InfoModalStyle}>
-          <Typography id="modal-modal-title" variant="h6">
-            Send your gift card
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          <Typography variant="h6">Send your gift card</Typography>
+          <Typography sx={{ mt: 2 }}>
             <br />
             Click on the voucher and you will copy the voucher code, you can
             then share it with anyone. <br />
