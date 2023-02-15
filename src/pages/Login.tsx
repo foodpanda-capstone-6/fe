@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
-import DataUserCredentialsMock from "../database/user.json";
 import { Box, Grid, Link, TextField, Typography, Alert } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { setAuthCookie } from "../ultis/helperCookie";
@@ -63,18 +62,6 @@ const Login: React.FC<Props> = ({
         setAuthCookie("token", data.data.token);
         SetAuthenticated(true);
       });
-
-    // for (const { username, password } of DataUserCredentialsMock) {
-    //   if (username === userFields.username) {
-    //     if (password !== userFields.password) {
-    //       return setErrorMsg("You have entered the wrong password");
-    //     }
-    //     setAuthCookie(userFields.username);
-    //     SetAuthenticated(true);
-    //     return;
-    //   }
-    // }
-    // return setErrorMsg(`Username does not exist`);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
