@@ -26,7 +26,10 @@ const initialUserFields = (): UserCredentialLoginFields => {
   };
 };
 
-const Login: React.FC<Props> = ({ isAuthenticated, setAuthenticated: SetAuthenticated }) => {
+const Login: React.FC<Props> = ({
+  isAuthenticated,
+  setAuthenticated: SetAuthenticated,
+}) => {
   const navigate: (path: string) => void = useNavigate();
 
   useEffect(() => {
@@ -37,17 +40,29 @@ const Login: React.FC<Props> = ({ isAuthenticated, setAuthenticated: SetAuthenti
 
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    for (const { username, password } of DataUserCredentialsMock) {
-      if (username === userFields.username) {
-        if (password !== userFields.password) {
-          return setErrorMsg("You have entered the wrong password");
+    fetch("http://localhost:8081/auth", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: userFields.username,
+        password: userFields.password,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+        console.log(data.message);
+
+        if (data.message !== "") {
+          return setErrorMsg(data.message);
         }
-        setAuthCookie(userFields.username);
+
+        setAuthCookie("username", data.data.username);
+        setAuthCookie("token", data.data.token);
         SetAuthenticated(true);
-        return;
-      }
-    }
-    return setErrorMsg(`Username does not exist`);
+      });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,8 +72,9 @@ const Login: React.FC<Props> = ({ isAuthenticated, setAuthenticated: SetAuthenti
     });
   };
 
-  const [userFields, setUserFields] =
-    useState<UserCredentialLoginFields>(initialUserFields());
+  const [userFields, setUserFields] = useState<UserCredentialLoginFields>(
+    initialUserFields()
+  );
   const [errorMsg, setErrorMsg] = useState<string>("");
 
   return (
