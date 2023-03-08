@@ -34,23 +34,17 @@ const HomePageMenu: react.FC<Props> = ({ isLogin }) => {
           width: "100%",
           height: "22rem",
           backgroundColor: "rgba(180, 180, 180, 0.5)",
-          // paddingRight: "0",
-          // paddingLeft: "1.5rem",
         }}
       >
         <Grid
           container
-          direction="column"
           justifyContent="center"
-          sx={{ padding: "1rem" }}
+          alignItems="flex-start"
+          direction="row"
+          sx={{ padding: "5px" }}
         >
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="flex-start"
-          >
-            <Grid xs={8}>
+          <Grid direction="column" xs={6} sx={{ paddingRight: "5px" }}>
+            <Grid xs={12}>
               <CardActionArea
                 sx={{
                   backgroundColor: "white",
@@ -63,7 +57,7 @@ const HomePageMenu: react.FC<Props> = ({ isLogin }) => {
                 </CardContent>
               </CardActionArea>
             </Grid>
-            <Grid xs={4}>
+            <Grid xs={12} sx={{ paddingTop: "5px" }}>
               <CardActionArea
                 sx={{
                   backgroundColor: "white",
@@ -72,30 +66,18 @@ const HomePageMenu: react.FC<Props> = ({ isLogin }) => {
                 }}
               >
                 <CardContent>
-                  <Typography component="div">pandamart</Typography>
+                  <Typography component="div">Shops</Typography>
                 </CardContent>
               </CardActionArea>
             </Grid>
           </Grid>
-        </Grid>
-        <Grid
-          container
-          direction="column"
-          justifyContent="center"
-          sx={{ padding: "1rem" }}
-        >
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="flex-start"
-          >
-            <Grid xs={8}>
+          <Grid direction="column" xs={6}>
+            <Grid xs={12}>
               <CardActionArea
                 sx={{
                   backgroundColor: "white",
                   borderRadius: "10px",
-                  height: "6rem",
+                  height: "9rem",
                 }}
               >
                 <CardContent>
@@ -103,16 +85,16 @@ const HomePageMenu: react.FC<Props> = ({ isLogin }) => {
                 </CardContent>
               </CardActionArea>
             </Grid>
-            <Grid xs={4}>
+            <Grid xs={12} sx={{ paddingTop: "5px" }}>
               <CardActionArea
                 sx={{
                   backgroundColor: "white",
                   borderRadius: "10px",
-                  height: "100%",
+                  height: "12rem",
                 }}
               >
                 <CardContent>
-                  <Typography component="div">shops</Typography>
+                  <Typography component="div">pandamart</Typography>
                 </CardContent>
               </CardActionArea>
             </Grid>

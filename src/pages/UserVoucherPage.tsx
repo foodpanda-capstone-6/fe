@@ -3,58 +3,36 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import {
   Button,
-  Card,
-  CardActionArea,
-  CardActions,
-  CardContent,
+  Drawer,
+  FormHelperText,
+  Grid,
   Modal,
+  Popover,
   Tab,
+  TextField,
   Typography,
 } from "@mui/material";
 import { TabPanel, TabContext, TabList } from "@mui/lab";
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
+import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
+import { PinkButton, showVoucherCard } from "../ultis/VoucherComponent";
+import ShowMyVoucher from "../components/ShowMyVoucher";
 
 interface Props {
   isLogin: boolean;
 }
 
-const style = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  width: "200px",
-  height: "300px",
-  transform: "translate(-50%, -50%)",
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
-
-const showVoucherCard = (value: number) => {
-  return (
-    <Card style={{ marginTop: "15px" }}>
-      <CardContent>
-        <Typography variant="h4" component="div">
-          ${value} FPD
-        </Typography>
-        <Typography variant="body2" style={{ marginTop: "5px" }}>
-          ${value} gift card that can be used with any merchant
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button size="small">Purchase</Button>
-      </CardActions>
-    </Card>
-  );
-};
-
 const UserVoucherPage: React.FC<Props> = ({ isLogin }) => {
   const navigate: (path: string) => void = useNavigate();
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [openInfoModal, setOpenInfoModal] = useState(false);
+  const [openCopyModal, setOpenCopyModal] = useState(false);
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const [openPurchaseDrawer, setOpenPurchaseDrawer] = useState({
+    status: false,
+    value: 0,
+  });
+  const [addErrorMsg, setAddErrorMsg] = useState("code does not exist");
   const voucherValue = [10, 25, 50, 100];
   const myVoucher = [
     {
@@ -66,14 +44,14 @@ const UserVoucherPage: React.FC<Props> = ({ isLogin }) => {
     },
     {
       id: 2,
-      code: "5h2d90vq11",
+      code: "ZybD6CzLvy",
       value: 50,
       owner: 1,
       expire: "18-04-2029",
     },
     {
       id: 4,
-      code: "5h2d90vq11",
+      code: "XUb6GcU2yl",
       value: 30,
       owner: 1,
       expire: "05-08-2025",
@@ -86,33 +64,11 @@ const UserVoucherPage: React.FC<Props> = ({ isLogin }) => {
     }
   }, [isLogin]);
 
-  const showMyVoucher = (voucher: any) => {
-    return (
-      <Card style={{ marginTop: "6px" }}>
-        <CardActionArea>
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              ${voucher.value} PFD
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Expiry {voucher.expire}
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-        <CardActions>
-          <Button size="small" sx={{ color: "#FF2B85" }} onClick={handleOpen}>
-            Send
-          </Button>
-        </CardActions>
-      </Card>
-    );
-  };
-
   const [value, setValue] = React.useState("myVoucher");
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+  const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
-  console.log(value);
+
   return (
     <>
       <main>
@@ -135,7 +91,7 @@ const UserVoucherPage: React.FC<Props> = ({ isLogin }) => {
               >
                 <TabList
                   value={value}
-                  onChange={handleChange}
+                  onChange={handleTabChange}
                   textColor="secondary"
                   indicatorColor="secondary"
                   aria-label="secondary tabs example"
@@ -146,30 +102,138 @@ const UserVoucherPage: React.FC<Props> = ({ isLogin }) => {
                 </TabList>
               </Stack>
               <TabPanel value="myVoucher">
-                {myVoucher.map((voucher) => showMyVoucher(voucher))}
+                <PinkButton
+                  sx={{
+                    width: "100%",
+                    borderRadius: "5px",
+                    backgroundColor: "white",
+                    color: "#FF2B85",
+                    alignContent: "center",
+                    justifyContent: "center",
+                    fontWeight: "bolder",
+                    boxShadow: "3",
+                  }}
+                  onClick={() => setOpenDrawer(true)}
+                >
+                  <Typography align="center">
+                    <ConfirmationNumberIcon sx={{ verticalAlign: "middle" }} />
+                    {"  "}Add a Voucher
+                  </Typography>
+                </PinkButton>
+                {myVoucher.map((voucher) => (
+                  <ShowMyVoucher
+                    voucher={voucher}
+                    setOpenInfoModal={setOpenInfoModal}
+                    setOpenCopyModal={setOpenCopyModal}
+                  />
+                ))}
               </TabPanel>
               <TabPanel value="voucherStore">
-                {voucherValue.map((value) => showVoucherCard(value))}
+                <Box>
+                  <Grid container>
+                    {voucherValue.map((value) =>
+                      showVoucherCard(value, setOpenPurchaseDrawer)
+                    )}
+                  </Grid>
+                </Box>
               </TabPanel>
             </TabContext>
           </Container>
         </Box>
       </main>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+
+      <Modal open={openInfoModal} onClose={() => setOpenInfoModal(false)}>
+        <Box
+          sx={{
+            position: "absolute" as "absolute",
+            top: "50%",
+            left: "50%",
+            width: "200px",
+            height: "300px",
+            transform: "translate(-50%, -50%)",
+            bgcolor: "background.paper",
+            boxShadow: 1,
+            p: 4,
+          }}
+        >
+          <Typography variant="h6">Send your gift card</Typography>
+          <Typography sx={{ mt: 2 }}>
+            <br />
+            Click on the voucher and you will copy the voucher code, you can
+            then share it with anyone. <br />
+            <br />
+            Please note that vouchers are only transforable once, keep it safe
           </Typography>
         </Box>
       </Modal>
+
+      <Popover
+        open={openCopyModal}
+        onClose={() => setOpenCopyModal(false)}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+      >
+        <Typography sx={{ padding: 1 }}>Voucher code copied!</Typography>
+      </Popover>
+
+      <Drawer
+        anchor="bottom"
+        open={openDrawer}
+        onClose={() => setOpenDrawer(false)}
+      >
+        <Box sx={{ height: "12rem", marginX: "15px", paddingTop: "15px" }}>
+          <Typography sx={{ fontWeight: "bold", fontSize: "15px" }}>
+            {" "}
+            Add a Voucher
+          </Typography>
+
+          <TextField
+            sx={{ marginTop: "15px", width: "100%" }}
+            label="Voucher Code"
+            variant="outlined"
+          />
+          <FormHelperText sx={{ color: "red" }}>{addErrorMsg}</FormHelperText>
+          <PinkButton sx={{ marginTop: "15px", width: "100%" }}>Add</PinkButton>
+        </Box>
+      </Drawer>
+
+      <Drawer
+        anchor="bottom"
+        open={openPurchaseDrawer.status}
+        onClose={() =>
+          setOpenPurchaseDrawer((prevState) => ({
+            ...prevState,
+            status: false,
+          }))
+        }
+      >
+        <Box sx={{ height: "12rem", marginX: "15px", paddingTop: "15px" }}>
+          <Typography sx={{ fontWeight: "bold", fontSize: "15px" }}>
+            Please confirm your order
+          </Typography>
+          <Typography sx={{ fontSize: "13px", marginTop: "10px" }}>
+            I would like to purchase this ${openPurchaseDrawer.value} voucher
+          </Typography>
+          <PinkButton sx={{ marginTop: "25px", width: "100%" }}>
+            Purchase
+          </PinkButton>
+          <Button
+            variant="outlined"
+            color="error"
+            sx={{ marginTop: "15px", width: "100%" }}
+            onClick={() =>
+              setOpenPurchaseDrawer((prevState) => ({
+                ...prevState,
+                status: false,
+              }))
+            }
+          >
+            Cancel
+          </Button>
+        </Box>
+      </Drawer>
     </>
   );
 };

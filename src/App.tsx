@@ -6,7 +6,7 @@ import HomePageMenu from "./pages/HomePageMenu";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import UserVoucherPage from "./pages/UserVoucherPage";
-import { getAuthCookie,getUsernameFromCookie } from "./ultis/helperCookie";
+import { getAuthCookie, getUsernameFromCookie } from "./ultis/helperCookie";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -15,15 +15,15 @@ function App() {
   useEffect(() => {
     const cookie = getAuthCookie();
 
-    if(cookie) {
+    if (cookie) {
       const username = getUsernameFromCookie();
       setUsername(username);
       console.log(`cookie username: (${username})`);
       setIsAuthenticated(true);
-    }else {
+    } else {
       setIsAuthenticated(false);
     }
-  }, [username]);
+  }, [username, isAuthenticated]);
 
   return (
     <div className="App">
@@ -38,9 +38,17 @@ function App() {
       <Routes>
         <Route
           path="/login"
-          element={<Login isAuthenticated={isAuthenticated} setAuthenticated={setIsAuthenticated} />}
+          element={
+            <Login
+              isAuthenticated={isAuthenticated}
+              setAuthenticated={setIsAuthenticated}
+            />
+          }
         />
-        <Route path="/register" element={<Register isLogin={isAuthenticated} />} />
+        <Route
+          path="/register"
+          element={<Register isLogin={isAuthenticated} />}
+        />
         <Route path="/" element={<HomePageMenu isLogin={isAuthenticated} />} />
         <Route
           path="/voucher/:user"
