@@ -1,15 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
-  Container,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Paper,
-  Radio,
-  RadioGroup,
+  Card,
   Stack,
+  Container,
+  Paper,
   styled,
   TextField,
   Typography,
@@ -31,41 +27,41 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const CartPage: React.FC<Props> = ({ username, isLogin }) => {
   const navigate: (path: string) => void = useNavigate();
-
+  const [myVoucherCart, setMyVoucherCart] = useState([])
   useEffect(() => {
     if (isLogin === false) {
       navigate("/login");
     }
-  }, [isLogin]);
 
+    fetch(`http://localhost:8081/cart?username=${username}`)
+      .then((response) => response.json())
+      .then((data) => setMyVoucherCart(data));
+  }, [isLogin]);
+  console.log(`this is voucher cart ${JSON.stringify(myVoucherCart)}`)
   return (
     <>
       <main>
         <Box>
-          <Container fixed>
-            <Typography variant="h6" sx={{ marginTop: "10px" }}>
-              Your Cart
-            </Typography>
-            <Typography variant="overline">$5 PauPau Vouchers</Typography>
-            <Box
-              component="img"
-              sx={{
-                width: "100%",
-              }}
-              alt="PauPauYourVouchers"
-              src="../src/assets/images/YourVouchersImg.png"
-            />
+          <Typography variant="h6" sx={{ marginTop: "10px" }}>
+            Your Cart
+          </Typography>
+          {myVoucherCart && myVoucherCart.map((voucher) => (
+            <Container fixed>
 
-            <PinkButton
-              sx={{
-                marginTop: "50%",
-                height: "100%",
-                width: "100%",
-              }}
-            >
-              Confirm Purchase
-            </PinkButton>
-          </Container>
+
+            </Container>
+          ))}
+
+          <PinkButton
+            sx={{
+              marginTop: "50%",
+              height: "100%",
+              width: "100%",
+            }}
+          >
+            Confirm Purchase
+          </PinkButton>
+
         </Box>
       </main>
     </>

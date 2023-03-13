@@ -88,7 +88,8 @@ const Header: React.FC<HeaderProps> = ({
         >
           {title}
         </Typography>
-        <ShoppingCartIcon />
+        <ShoppingCartIcon
+          onClick={() => navigate(`/cart`)} />
       </Toolbar>
       <Toolbar
         sx={{

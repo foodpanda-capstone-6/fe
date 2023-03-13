@@ -91,7 +91,7 @@ const UserVoucherPage: React.FC<Props> = ({ username, isLogin }) => {
       .then((data) => setMarketVouchers(data));
 
   }, [])
-
+  console.log(` this is market vouchers ${JSON.stringify(marketVouchers)}`)
   const addToCart = () => {
     fetch("http://localhost:8081/cart/add", {
       method: "POST",
@@ -100,7 +100,7 @@ const UserVoucherPage: React.FC<Props> = ({ username, isLogin }) => {
       },
       body: JSON.stringify({
         username: username,
-        code: openPurchaseDrawer.id,
+        id: openPurchaseDrawer.id,
         quantity: voucherQty
       }),
     })
@@ -287,6 +287,7 @@ const UserVoucherPage: React.FC<Props> = ({ username, isLogin }) => {
           <PinkButton
             sx={{ marginTop: "30px", width: "100%" }}
             onClick={() => {
+              addToCart()
               setSelectedVouchers((prevVouchers: any) => [
                 ...prevVouchers,
                 {
@@ -298,7 +299,7 @@ const UserVoucherPage: React.FC<Props> = ({ username, isLogin }) => {
                   status: false,
                 })),
               ])
-              addToCart()
+
             }}
           >
             Add to Cart
