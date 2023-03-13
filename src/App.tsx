@@ -10,61 +10,52 @@ import UserVoucherPage from "./pages/UserVoucherPage";
 import { getAuthCookie, getUsernameFromCookie } from "./ultis/helperCookie";
 
 function App() {
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-    const [username, setUsername] = useState<string | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [username, setUsername] = useState<string | null>(null);
 
-    useEffect(() => {
-        const cookie = getAuthCookie();
+  useEffect(() => {
+    const cookie = getAuthCookie();
 
-        if (cookie) {
-            const username = getUsernameFromCookie();
-            setUsername(username);
-            console.log(`cookie username: (${username})`);
-            setIsAuthenticated(true);
-        } else {
-            setIsAuthenticated(false);
-        }
-    }, [username, isAuthenticated]);
+    if (cookie) {
+      const username = getUsernameFromCookie();
+      setUsername(username);
+      console.log(`cookie username: (${username})`);
+      setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
+    }
+  }, [username, isAuthenticated]);
 
-    return (
-        <div className="App">
-            {isAuthenticated && (
-                <Header
-                    sections={[]}
-                    title={"foodpanda"}
-                    setIsAuthenticated={setIsAuthenticated}
-                    username={username}
-                />
-            )}
-            <Routes>
-                <Route
-                    path="/login"
-                    element={
-                        <Login
-                            isAuthenticated={isAuthenticated}
-                            setAuthenticated={setIsAuthenticated}
-                        />
-                    }
-                />
-                <Route
-                    path="/register"
-                    element={<Register isLogin={isAuthenticated} />}
-                />
-                <Route
-                    path="/"
-                    element={<HomePageMenu isLogin={isAuthenticated} />}
-                />
-                <Route
-                    path="/voucher/:user"
-                    element={<UserVoucherPage isLogin={isAuthenticated} />}
-                />
-                <Route
-                    path="/cart/:user"
-                    element={<CartPage isLogin={isAuthenticated} />}
-                />
-            </Routes>
-        </div>
-    );
+  return (
+    <div className="App">
+      {isAuthenticated && (
+        <Header
+          sections={[]}
+          title={"foodpanda"}
+          setIsAuthenticated={setIsAuthenticated}
+          username={username}
+        />
+      )}
+      <Routes>
+        <Route path="/" element={<HomePageMenu isLogin={isAuthenticated} />} />
+        <Route
+          path="/login"
+          element={
+            <Login
+              isAuthenticated={isAuthenticated}
+              setAuthenticated={setIsAuthenticated}
+            />
+          }
+        />
+        <Route
+          path="/register"
+          element={<Register isLogin={isAuthenticated} />}
+        />
+        <Route path='/voucher' element={<UserVoucherPage username={username} isLogin={isAuthenticated} />} />
+        <Route path="/cart" element={<CartPage username={username} isLogin={isAuthenticated} />} />
+      </Routes>
+    </div>
+  );
 }
 
 export default App;

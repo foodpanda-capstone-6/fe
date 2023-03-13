@@ -1,7 +1,9 @@
 import styled from "@emotion/styled";
 import { Button, Card, CardContent, Typography } from "@mui/material";
 
-interface voucherOject {
+
+
+interface marketVoucherObject {
   id: number;
   code: string;
   value: number;
@@ -10,7 +12,7 @@ interface voucherOject {
 }
 
 interface showMyVoucherProps {
-  voucher: voucherOject;
+  voucher: marketVoucherObject;
   setOpenInfoModal: React.Dispatch<React.SetStateAction<boolean>>;
   setOpenCopyModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -23,17 +25,19 @@ export const PinkButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-export const showVoucherCard = (
-  value: number,
+export const showMarketVoucherCard = (
+  marketVouchers: { Id: number, Description: string, Amount: number },
   setOpenPurchaseDrawer: React.Dispatch<
     React.SetStateAction<{
       status: boolean;
       value: number;
+      id: number
     }>
   >
 ) => {
   return (
     <Card
+      key={`market-voucher-${marketVouchers.Id}`}
       sx={{
         bgcolor: "#FF2B85",
         color: "white",
@@ -46,14 +50,14 @@ export const showVoucherCard = (
         marginTop: "5px",
       }}
       onClick={() => {
-        setOpenPurchaseDrawer({ status: true, value: value });
+        setOpenPurchaseDrawer({ status: true, value: marketVouchers.Amount, id: marketVouchers.Id });
       }}
     >
       <CardContent>
         <Typography
           sx={{ fontSize: "50px", paddingTop: "10px", fontWeight: "bolder" }}
         >
-          ${value}
+          ${marketVouchers.Amount}
         </Typography>
         <Typography
           sx={{
@@ -66,6 +70,8 @@ export const showVoucherCard = (
           foodpanda voucher
         </Typography>
       </CardContent>
-    </Card>
+
+
+    </Card >
   );
 };
