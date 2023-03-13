@@ -36,6 +36,7 @@ interface IVouchers {
 }
 
 const UserVoucherPage: React.FC<Props> = ({ isLogin }) => {
+
     const navigate: (path: string) => void = useNavigate();
     const [openInfoModal, setOpenInfoModal] = useState(false);
     const [openCopyModal, setOpenCopyModal] = useState(false);
