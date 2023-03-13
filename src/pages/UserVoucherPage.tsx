@@ -33,8 +33,8 @@ const UserVoucherPage: React.FC<Props> = ({ isLogin }) => {
     value: 0,
   });
   const [addErrorMsg, setAddErrorMsg] = useState("code does not exist");
-  const voucherValue = [10, 25, 50, 100];
-  const myVoucher = [
+  const marketVouchers = [{ marketVoucherCode: "festive1", amount: 10 }, { marketVoucherCode: "festive2", amount: 20 }];
+  const myVouchers = [
     {
       id: 1,
       code: "5h2d90vq11",
@@ -120,7 +120,7 @@ const UserVoucherPage: React.FC<Props> = ({ isLogin }) => {
                     {"  "}Add a Voucher
                   </Typography>
                 </PinkButton>
-                {myVoucher.map((voucher) => (
+                {myVouchers.map((voucher) => (
                   <ShowMyVoucher
                     voucher={voucher}
                     setOpenInfoModal={setOpenInfoModal}
@@ -131,7 +131,7 @@ const UserVoucherPage: React.FC<Props> = ({ isLogin }) => {
               <TabPanel value="voucherStore">
                 <Box>
                   <Grid container>
-                    {voucherValue.map((value) =>
+                    {marketVouchers.map((value) =>
                       showVoucherCard(value, setOpenPurchaseDrawer)
                     )}
                   </Grid>
