@@ -13,7 +13,6 @@ import {
   Popover,
   Select,
   SelectChangeEvent,
-  Slider,
   Tab,
   TextField,
   Typography,
@@ -22,38 +21,42 @@ import { TabPanel, TabContext, TabList } from "@mui/lab";
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
-import { PinkButton, showVoucherCard } from "../ultis/VoucherComponent";
-import ControlPointIcon from "@mui/icons-material/ControlPoint";
+import { PinkButton, showMarketVoucherCard } from "../ultis/VoucherComponent";
 import ShowMyVoucher from "../components/ShowMyVoucher";
+import { useParams } from "react-router-dom";
+
 
 interface Props {
+  username: string | null,
   isLogin: boolean;
 }
 
 interface IVouchers {
-  code?: number;
-  count?: number;
+  code: number;
+  value: number;
+  count: number;
 }
 
-const UserVoucherPage: React.FC<Props> = ({ isLogin }) => {
-  const navigate: (path: string) => void = useNavigate();
+const UserVoucherPage: React.FC<Props> = ({ username, isLogin }) => {
+  const navigate = useNavigate();
   const [openInfoModal, setOpenInfoModal] = useState(false);
   const [openCopyModal, setOpenCopyModal] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
   const [voucherQty, setVoucherQty] = useState("");
-
+  const [marketVouchers, setMarketVouchers] = useState([])
   const handleQtyChange = (event: SelectChangeEvent) => {
     setVoucherQty(event.target.value as string);
   };
+
 
   const [selectedVouchers, setSelectedVouchers] = useState<IVouchers[]>([]);
 
   const [openPurchaseDrawer, setOpenPurchaseDrawer] = useState({
     status: false,
     value: 0,
+    id: 0
   });
   const [addErrorMsg, setAddErrorMsg] = useState("code does not exist");
-  const voucherValue = [10, 25, 50, 100];
   const myVoucher = [
     {
       id: 1,
@@ -82,11 +85,29 @@ const UserVoucherPage: React.FC<Props> = ({ isLogin }) => {
     if (isLogin === false) {
       navigate("/login");
     }
-  }, [isLogin]),
-    console.log(selectedVouchers);
+
+    fetch("http://localhost:8081/market")
+      .then((response) => response.json())
+      .then((data) => setMarketVouchers(data));
+
+  }, [])
+
+  const addToCart = () => {
+    fetch("http://localhost:8081/cart/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: username,
+        code: openPurchaseDrawer.id,
+        quantity: voucherQty
+      }),
+    })
+  }
 
   const [value, setValue] = React.useState("myVoucher");
-  const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
+  const handleTabChange = (_: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
 
@@ -152,8 +173,8 @@ const UserVoucherPage: React.FC<Props> = ({ isLogin }) => {
               <TabPanel value="voucherStore">
                 <Box>
                   <Grid container>
-                    {voucherValue.map((value) =>
-                      showVoucherCard(value, setOpenPurchaseDrawer)
+                    {marketVouchers.map((mv) =>
+                      showMarketVoucherCard(mv, setOpenPurchaseDrawer)
                     )}
                   </Grid>
                 </Box>
@@ -265,7 +286,7 @@ const UserVoucherPage: React.FC<Props> = ({ isLogin }) => {
           </FormControl>
           <PinkButton
             sx={{ marginTop: "30px", width: "100%" }}
-            onClick={() =>
+            onClick={() => {
               setSelectedVouchers((prevVouchers: any) => [
                 ...prevVouchers,
                 {
@@ -277,7 +298,8 @@ const UserVoucherPage: React.FC<Props> = ({ isLogin }) => {
                   status: false,
                 })),
               ])
-            }
+              addToCart()
+            }}
           >
             Add to Cart
           </PinkButton>

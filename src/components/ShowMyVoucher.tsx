@@ -29,7 +29,7 @@ const ShowMyVoucher: React.FC<showMyVoucherProps> = ({
         marginTop: "15px",
 
         height: "70px",
-        borderRadius: "10%",
+        borderRadius: "50%",
         boxShadow: 3,
       }}
     >

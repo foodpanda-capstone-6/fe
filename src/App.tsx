@@ -37,6 +37,7 @@ function App() {
         />
       )}
       <Routes>
+        <Route path="/" element={<HomePageMenu isLogin={isAuthenticated} />} />
         <Route
           path="/login"
           element={
@@ -50,15 +51,8 @@ function App() {
           path="/register"
           element={<Register isLogin={isAuthenticated} />}
         />
-        <Route path="/" element={<HomePageMenu isLogin={isAuthenticated} />} />
-        <Route
-          path="/voucher/:user"
-          element={<UserVoucherPage isLogin={isAuthenticated} />}
-        />
-        <Route
-          path="/cart/:user"
-          element={<CartPage isLogin={isAuthenticated} />}
-        />
+        <Route path='/voucher' element={<UserVoucherPage username={username} isLogin={isAuthenticated} />} />
+        <Route path="/cart" element={<CartPage username={username} isLogin={isAuthenticated} />} />
       </Routes>
     </div>
   );

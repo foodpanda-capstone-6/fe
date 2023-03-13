@@ -17,6 +17,7 @@ import {
 import { PinkButton } from "../ultis/VoucherComponent";
 
 interface Props {
+  username: string | null,
   isLogin: boolean;
 }
 
@@ -28,7 +29,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const CartPage: React.FC<Props> = ({ isLogin }) => {
+const CartPage: React.FC<Props> = ({ username, isLogin }) => {
   const navigate: (path: string) => void = useNavigate();
 
   useEffect(() => {
@@ -43,7 +44,7 @@ const CartPage: React.FC<Props> = ({ isLogin }) => {
         <Box>
           <Container fixed>
             <Typography variant="h6" sx={{ marginTop: "10px" }}>
-              Purchase Voucher
+              Your Cart
             </Typography>
             <Typography variant="overline">$5 PauPau Vouchers</Typography>
             <Box

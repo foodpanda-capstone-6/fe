@@ -33,7 +33,7 @@ const HomePageMenu: react.FC<Props> = ({ isLogin }) => {
           direction="row"
           sx={{ padding: "5px" }}
         >
-          <Grid direction="column" xs={6} sx={{ paddingRight: "5px" }}>
+          <Grid xs={6} sx={{ paddingRight: "5px", flexDirection: "column" }}>
             <Grid xs={12}>
               <CardActionArea
                 sx={{

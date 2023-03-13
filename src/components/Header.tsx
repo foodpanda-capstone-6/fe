@@ -2,11 +2,11 @@ import Toolbar from "@mui/material/Toolbar";
 import SearchIcon from "@mui/icons-material/Search";
 import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SideDrawer from "./SideDrawer";
 import { useNavigate } from "react-router-dom";
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import React from "react";
 
 interface HeaderProps {
@@ -88,7 +88,7 @@ const Header: React.FC<HeaderProps> = ({
         >
           {title}
         </Typography>
-        <FavoriteBorderIcon />
+        <ShoppingCartIcon />
       </Toolbar>
       <Toolbar
         sx={{

@@ -87,7 +87,7 @@ const SideDrawer = ({ setIsLogin, username }: Props) => {
                   <ListItemText
                     primary="Cart"
                     onClick={() => {
-                      navigate("/cart/user");
+                      navigate(`/cart`);
                       setIsDrawerOpen(!isDrawerOpen);
                     }}
                   />
@@ -118,7 +118,7 @@ const SideDrawer = ({ setIsLogin, username }: Props) => {
                   <ListItemText
                     primary="Vouchers"
                     onClick={() => {
-                      navigate("/voucher/user");
+                      navigate(`/voucher`);
                       setIsDrawerOpen(!isDrawerOpen);
                     }}
                   />
