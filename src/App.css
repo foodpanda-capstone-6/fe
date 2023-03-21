@@ -1,22 +1,23 @@
 .App {
-  overflow: hidden;
+    overflow: hidden;
+    height: 100%;
 }
 
 .sideNavBarMid {
-  padding-left: 2rem;
-  padding-top: 2rem;
+    padding-left: 2rem;
+    padding-top: 2rem;
 }
 
 .sideScroll {
-  margin-top: 1rem;
-  overflow-x: auto;
-  overflow-y: hidden;
-  height: 8.5rem;
-  display: flex;
+    margin-top: 1rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 8.5rem;
+    display: flex;
 }
 
 .items {
-  margin-right: 0.5rem;
-  height: 8.5rem;
-  width: 11rem;
+    margin-right: 0.5rem;
+    height: 8.5rem;
+    width: 11rem;
 }

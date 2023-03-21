@@ -6,108 +6,118 @@ import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SideDrawer from "./SideDrawer";
 import { useNavigate } from "react-router-dom";
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import React from "react";
+import { Badge } from "@mui/material";
 
 interface HeaderProps {
-  sections: ReadonlyArray<{
+    sections: ReadonlyArray<{
+        title: string;
+        url: string;
+    }>;
     title: string;
-    url: string;
-  }>;
-  title: string;
-  setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
-  username: string | null;
+    setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
+    username: string | null;
+    cartNumber: number;
 }
 
-const test = "asd";
+
 
 const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(1),
-    width: "auto",
-  },
+    position: "relative",
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: alpha(theme.palette.common.white, 0.15),
+    "&:hover": {
+        backgroundColor: alpha(theme.palette.common.white, 0.25),
+    },
+    marginLeft: 0,
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+        marginLeft: theme.spacing(1),
+        width: "auto",
+    },
 }));
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
+    padding: theme.spacing(0, 2),
+    height: "100%",
+    position: "absolute",
+    pointerEvents: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      width: "12ch",
-      "&:focus": {
-        width: "20ch",
-      },
+    color: "inherit",
+    "& .MuiInputBase-input": {
+        padding: theme.spacing(1, 1, 1, 0),
+        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+        transition: theme.transitions.create("width"),
+        width: "100%",
+        [theme.breakpoints.up("sm")]: {
+            width: "12ch",
+            "&:focus": {
+                width: "20ch",
+            },
+        },
     },
-  },
 }));
 
 const Header: React.FC<HeaderProps> = ({
-  title,
-  setIsAuthenticated,
-  username,
+    title,
+    setIsAuthenticated,
+    username,
+    cartNumber
 }) => {
-  const navigate: (path: string) => void = useNavigate();
+    const navigate: (path: string) => void = useNavigate();
 
-  return (
-    <React.Fragment>
-      <Toolbar
-        sx={{
-          backgroundColor: "#FF2B85",
-          color: "#FFFFFF",
-        }}
-      >
-        <SideDrawer setIsLogin={setIsAuthenticated} username={username} />
-        <Typography
-          onClick={() => navigate("/")}
-          variant="h6"
-          color="inherit"
-          align="center"
-          noWrap
-          sx={{ flex: 2 }}
-        >
-          {title}
-        </Typography>
-        <ShoppingCartIcon
-          onClick={() => navigate(`/cart`)} />
-      </Toolbar>
-      <Toolbar
-        sx={{
-          backgroundColor: "#FF2B85",
-          color: "#FFFFFF",
-          borderBottom: 1,
-          borderColor: "divider",
-        }}
-      >
-        <Search>
-          <SearchIconWrapper>
-            <SearchIcon />
-          </SearchIconWrapper>
-          <StyledInputBase fullWidth placeholder="Search shops & restaurants" />
-        </Search>
-      </Toolbar>
-    </React.Fragment>
-  );
+    return (
+        <React.Fragment>
+            <Toolbar
+                sx={{
+                    backgroundColor: "#FF2B85",
+                    color: "#FFFFFF",
+                }}
+            >
+                <SideDrawer
+                    setIsLogin={setIsAuthenticated}
+                    username={username}
+                />
+                <Typography
+                    onClick={() => navigate("/")}
+                    variant="h6"
+                    color="inherit"
+                    align="center"
+                    noWrap
+                    sx={{ flex: 2 }}
+                >
+                    {title}
+                </Typography>
+                <Badge badgeContent={cartNumber} color="secondary">
+                    <ShoppingCartIcon onClick={() => navigate(`/cart`)} />
+                </Badge>``
+            </Toolbar>
+            <Toolbar
+                sx={{
+                    backgroundColor: "#FF2B85",
+                    color: "#FFFFFF",
+                    borderBottom: 1,
+                    borderColor: "divider",
+                }}
+            >
+                <Search>
+                    <SearchIconWrapper>
+                        <SearchIcon />
+                    </SearchIconWrapper>
+                    <StyledInputBase
+                        fullWidth
+                        placeholder="Search shops & restaurants"
+                    />
+                </Search>
+            </Toolbar>
+        </React.Fragment>
+    );
 };
 
 export default Header;
