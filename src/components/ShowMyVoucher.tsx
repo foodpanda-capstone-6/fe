@@ -32,7 +32,7 @@ const ShowMyVoucher: React.FC<showMyVoucherProps> = ({
             }}
         >
             <Grid container>
-                <Grid xs={8}>
+                <Grid item xs={8}>
                     <Grid>
                         <Typography gutterBottom variant="h5" component="div">
                             ${voucher.Value} FPD
@@ -54,35 +54,40 @@ const ShowMyVoucher: React.FC<showMyVoucherProps> = ({
                     </Grid>
                 </Grid>
                 <Grid
+                    item
                     xs={4}
                     sx={{ marginY: "15px" }}
                     container
                     justifyContent="center"
                     alignItems="center"
                 >
-                    <PinkButton
-                        sx={{
-                            height: "20px",
-                            width: "70px",
-                        }}
-                        onClick={() => {
-                            navigator.clipboard.writeText(`${voucher.TransferCode}`);
-                            setOpenCopyModal(true);
-                            setTimeout(() => {
-                                setOpenCopyModal(false);
-                            }, 1000);
-                        }}
-                    >
-                        <Typography
+                    <Grid>
+                        <PinkButton
                             sx={{
-                                fontSize: "8px",
-                                color: "white",
-                                fontWeight: "bold",
+                                height: "20px",
+                                width: "90px",
+                            }}
+                            onClick={() => {
+                                navigator.clipboard.writeText(
+                                    `${voucher.TransferCode}`
+                                );
+                                setOpenCopyModal(true);
+                                setTimeout(() => {
+                                    setOpenCopyModal(false);
+                                }, 1000);
                             }}
                         >
-                            copy code
-                        </Typography>
-                    </PinkButton>
+                            <Typography
+                                sx={{
+                                    fontSize: "8px",
+                                    color: "white",
+                                    fontWeight: "bold",
+                                }}
+                            >
+                                send code
+                            </Typography>
+                        </PinkButton>
+                    </Grid>
                     <FormHelperText sx={{ color: "grey", fontSize: "6px" }}>
                         {voucher.IncentiveCode}
                     </FormHelperText>

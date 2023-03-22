@@ -14,6 +14,9 @@ import {
     Tab,
     TextField,
     Typography,
+    Paper,
+    List,
+    ListItem,
 } from "@mui/material";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { TabPanel, TabContext, TabList } from "@mui/lab";
@@ -112,7 +115,6 @@ const UserVoucherPage: React.FC<Props> = ({
                 .then((data) => setMyVouchers(data));
     }, [isLogin]);
 
-    console.log(` this is market vouchers ${JSON.stringify(marketVouchers)}`);
     const addToCart = () => {
         fetch("http://localhost:8081/cart/add", {
             method: "POST",
@@ -147,6 +149,33 @@ const UserVoucherPage: React.FC<Props> = ({
                             alt="PauPauYourVouchers"
                             src="../src/assets/images/YourVouchersImg.png"
                         />
+                        <Box
+                            sx={{
+                                display: "flex",
+                                flexWrap: "wrap",
+                                "& > :not(style)": {
+                                    m: 1,
+                                    width: 384,
+                                    height: 100,
+                                },
+                            }}
+                        >
+                            <Paper
+                                sx={{
+                                    backgroundColor: "#fef2f7",
+                                }}
+                                elevation={0}
+                            >
+                                <List sx={{ listStyleType: "disc", pl: 4 }}>
+                                    <ListItem sx={{ display: "list-item" }}>
+                                        Info One
+                                    </ListItem>
+                                    <ListItem sx={{ display: "list-item" }}>
+                                        Info One
+                                    </ListItem>
+                                </List>
+                            </Paper>
+                        </Box>
                         <Snackbar
                             open={openAlert}
                             autoHideDuration={4000}
@@ -167,7 +196,7 @@ const UserVoucherPage: React.FC<Props> = ({
                         </Snackbar>
                         <TabContext value={value}>
                             <Stack
-                                sx={{ pt: 4 }}
+                                sx={{ pt: 1 }}
                                 direction="row"
                                 spacing={2}
                                 justifyContent="center"
@@ -380,7 +409,13 @@ const UserVoucherPage: React.FC<Props> = ({
                                         variant="contained"
                                     >
                                         <Button
-                                            sx={{ backgroundColor: "#FF2B85" }}
+                                            sx={{
+                                                color: "white",
+                                                backgroundColor: "#FF2B85",
+                                                "&:hover": {
+                                                    backgroundColor: "#FF2B85",
+                                                },
+                                            }}
                                             onClick={() => {
                                                 if (voucherCount > 1) {
                                                     setVoucherCount(
@@ -402,7 +437,13 @@ const UserVoucherPage: React.FC<Props> = ({
                                             {voucherCount}
                                         </Typography>
                                         <Button
-                                            sx={{ backgroundColor: "#FF2B85" }}
+                                            sx={{
+                                                color: "white",
+                                                backgroundColor: "#FF2B85",
+                                                "&:hover": {
+                                                    backgroundColor: "#FF2B85",
+                                                },
+                                            }}
                                             onClick={() =>
                                                 setVoucherCount(
                                                     voucherCount + 1

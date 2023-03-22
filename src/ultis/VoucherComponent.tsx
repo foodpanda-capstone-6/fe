@@ -80,23 +80,25 @@ export const showMarketVoucherCard = (
     );
 };
 
-export const cartNumberCounter = async (
+export const cartNumberCounter = (
     username: string | null,
     setCartNumber: any
 ) => {
     let counter = 0;
-    await fetch(`http://localhost:8081/cart?username=${username}`)
-        .then((response) => response.json())
-        .then((data) => {
-            data.map((x: any) => {
-                console.log(
-                    `this is x.Qty: ${x.Qty}, counter amount: ${counter}`
-                );
-                counter += x.Qty;
-                console.log(data);
+    setTimeout(async () => {
+        await fetch(`http://localhost:8081/cart?username=${username}`)
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.length === 1) {
+                    counter = data[0].Qty;
+                } else {
+                    data.forEach((x: any) => {
+                        counter += x.Qty;
+                    });
+                }
             });
-        });
-    setCartNumber(counter);
-
-    // [{"Username":"kai","Id":2,"Qty":1,"Amount":20},{"Username":"kai","Id":1,"Qty":1,"Amount":10}]
+        setCartNumber(counter);
+    }, 500);
 };
+
+

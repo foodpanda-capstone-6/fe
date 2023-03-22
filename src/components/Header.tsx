@@ -21,8 +21,6 @@ interface HeaderProps {
     cartNumber: number;
 }
 
-
-
 const Search = styled("div")(({ theme }) => ({
     position: "relative",
     borderRadius: theme.shape.borderRadius,
@@ -68,7 +66,7 @@ const Header: React.FC<HeaderProps> = ({
     title,
     setIsAuthenticated,
     username,
-    cartNumber
+    cartNumber,
 }) => {
     const navigate: (path: string) => void = useNavigate();
 
@@ -96,7 +94,7 @@ const Header: React.FC<HeaderProps> = ({
                 </Typography>
                 <Badge badgeContent={cartNumber} color="secondary">
                     <ShoppingCartIcon onClick={() => navigate(`/cart`)} />
-                </Badge>``
+                </Badge>
             </Toolbar>
             <Toolbar
                 sx={{

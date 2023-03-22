@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { Box, Grid, Typography, Button, ButtonGroup } from "@mui/material";
-import { PinkButton } from "../ultis/VoucherComponent";
+import { cartNumberCounter, PinkButton } from "../ultis/VoucherComponent";
 
 interface Props {
     username: string | null;
@@ -15,33 +15,56 @@ interface VoucherType {
     Amount: number;
     Id: number;
 }
-const CartPage: React.FC<Props> = ({ username, isLogin }) => {
+const CartPage: React.FC<Props> = ({ username, isLogin, setCartNumber }) => {
     const navigate: (path: string) => void = useNavigate();
     const [myVoucherCart, setMyVoucherCart] = useState<VoucherType[]>([]);
     const [totalAmount, setTotalAmount] = useState(0);
+
+    const calculateTotalAmount = () => {
+        let amount = 0;
+
+        if (myVoucherCart.length === 1) {
+            amount = myVoucherCart[0].Amount * myVoucherCart[0].Qty;
+        } else {
+            myVoucherCart.forEach((x: any) => {
+                amount += x.Amount * x.Qty;
+            });
+        }
+        setTotalAmount(amount);
+
+        console.log(
+            `calculating total amount ${totalAmount}, ${JSON.stringify(
+                myVoucherCart
+            )}`
+        );
+    };
 
     useEffect(() => {
         if (isLogin === false) {
             navigate("/login");
         }
 
-        username &&
-            fetch(`http://localhost:8081/cart?username=${username}`)
-                .then((response) => response.json())
-                .then((data) => setMyVoucherCart(data));
+        username && clearCartPage(200);
     }, [isLogin]);
+
+    const clearCartPage = async (duration: number) => {
+        await fetch(`http://localhost:8081/cart?username=${username}`)
+            .then((response) => response.json())
+            .then((data) => setMyVoucherCart(data));
+        console.log(`onload cart details ${JSON.stringify(myVoucherCart)}`);
+
+        setTimeout(() => {
+            calculateTotalAmount();
+        }, duration);
+    };
 
     const updateCart = (voucher: VoucherType, action: any) => {
         let updatedQty = voucher.Qty;
 
         if (action === "plus") {
-            console.log("running plus");
             updatedQty++;
-            console.log(updatedQty);
         } else {
-            console.log("running minus");
             updatedQty--;
-            console.log(updatedQty);
         }
 
         const newVoucherValue = myVoucherCart.map((x) => {
@@ -64,22 +87,17 @@ const CartPage: React.FC<Props> = ({ username, isLogin }) => {
                 quantity: updatedQty,
             }),
         });
+
+        cartNumberCounter(username, setCartNumber);
+        calculateTotalAmount();
     };
 
     const confirmPurchase = () => {
-        console.log(`purhcsed`);
         fetch(`http://localhost:8081/cart/purchase?username=${username}`, {
             method: "POST",
         });
     };
 
-    const calculateTotalAmount = () => {
-        myVoucherCart.map((voucher: any) => {
-            setTotalAmount(totalAmount + voucher.Amount * voucher.Qty);
-        });
-    };
-
-    console.log(`this is voucher cart ${JSON.stringify(myVoucherCart)}`);
     return (
         <>
             <Box sx={{ height: "100%" }}>
@@ -127,7 +145,12 @@ const CartPage: React.FC<Props> = ({ username, isLogin }) => {
                                         >
                                             <Button
                                                 sx={{
+                                                    color: "white",
                                                     backgroundColor: "#FF2B85",
+                                                    "&:hover": {
+                                                        backgroundColor:
+                                                            "#FF2B85",
+                                                    },
                                                 }}
                                                 onClick={() => {
                                                     updateCart(
@@ -148,7 +171,12 @@ const CartPage: React.FC<Props> = ({ username, isLogin }) => {
                                             </Typography>
                                             <Button
                                                 sx={{
+                                                    color: "white",
                                                     backgroundColor: "#FF2B85",
+                                                    "&:hover": {
+                                                        backgroundColor:
+                                                            "#FF2B85",
+                                                    },
                                                 }}
                                                 onClick={() =>
                                                     updateCart(voucher, "plus")
@@ -164,6 +192,7 @@ const CartPage: React.FC<Props> = ({ username, isLogin }) => {
                     ))}
             </Box>
             <Box>
+                <Typography>{totalAmount}</Typography>
                 <PinkButton
                     sx={{
                         width: "100%",
@@ -176,7 +205,10 @@ const CartPage: React.FC<Props> = ({ username, isLogin }) => {
                         marginTop: "460px",
                         boxShadow: "3",
                     }}
-                    onClick={() => confirmPurchase()}
+                    onClick={() => {
+                        confirmPurchase();
+                        clearCartPage(500);
+                    }}
                 >
                     Purchase
                 </PinkButton>
