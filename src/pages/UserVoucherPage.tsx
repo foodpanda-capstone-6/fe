@@ -191,9 +191,9 @@ const UserVoucherPage: React.FC<Props> = ({
               >
                 <List>
                   <ListItem sx={{ fontSize: 11, textAlign: "justify" }}>
-                    - View your exisiting vouchers and add voucher in Youre
-                    Wallet tab, you're able to send gift vouchers to your
-                    friends and family as well!
+                    - View your existing vouchers and add voucher in your Wallet
+                    tab, you're able to send gift vouchers to your friends and
+                    family as well!
                   </ListItem>
                   <ListItem sx={{ fontSize: 11, textAlign: "justify" }}>
                     - Purchase gift vouchers in Voucher Store tab. Gift vouchers
